@@ -1,18 +1,17 @@
 import dayjs from "dayjs";
 import objectSupport from "dayjs/plugin/objectSupport";
 dayjs.extend(objectSupport);
-
 export const pomodoro = dayjs({
-  minutes: 0,
-  seconds: 2,
+  minutes: 25,
+  seconds: 0,
 });
 export const shortBreak = dayjs({
   minutes: 0,
-  seconds: 1,
+  seconds: 0,
 });
 export const longBreak = dayjs({
   minutes: 0,
-  seconds: 2,
+  seconds: 0,
 });
 export const timeZero = dayjs({
   minutes: 0,
@@ -25,4 +24,3 @@ export const timerModes = [
   { name: "longBreak", title: "Long Break" },
 ];
 
-export const pomodoroRepeat = 3

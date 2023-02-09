@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Timer, TimerModesWrapper, Settings } from "./components";
-import { timerModes, pomodoroRepeat } from "./constants";
+import { timerModes } from "./constants";
 import dayjs from "dayjs";
 import objectSupport from "dayjs/plugin/objectSupport";
 import { CiCircleMore } from "react-icons/ci";
+import { useStateContext } from "./contexts/ContextProvider";
 dayjs.extend(objectSupport);
 
 function App() {
   const [showMore, setShowMore] = useState(false);
   const [modeIsActive, setModeIsActive] = useState("pomodoro");
   const [pomodoroCount, setpomodoroCount] = useState(0);
-
+  const {settings} = useStateContext()
   function pomodoroCountPlus() {
     setpomodoroCount((prev) => prev + 1);
   }
@@ -24,7 +25,7 @@ function App() {
     const longBreakMode = timerModes[2].name;
     switch (modeIsActive) {
       case pomodoroMode:
-        addedPomodoro !== 0 && addedPomodoro % pomodoroRepeat === 0
+        addedPomodoro !== 0 && addedPomodoro % settings.longBreakDuration === 0
           ? setModeIsActive(longBreakMode)
           : setModeIsActive(shortBreakMode);
         break;

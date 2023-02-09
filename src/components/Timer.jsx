@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import {
   pomodoro,
-  longBreak,
   shortBreak,
+  longBreak,
   timeZero,
-  pomodoroRepeat,
   timerModes,
 } from "../constants";
 import { getMinutesString, getSecondsString } from "../utils";
 import { TimerController as Controller } from "./";
 import { useStateContext } from "../contexts/ContextProvider";
 
-function Timer({
-  mode,
-  nextMode,
-  pomodoroCount,
-  pomodoroCountPlus,
-}) {
-  const [remainingTime, setRemainingTime] = useState(pomodoro);
+function Timer({ mode, nextMode, pomodoroCount, pomodoroCountPlus }) {
+  const { settings } = useStateContext();
+  const [remainingTime, setRemainingTime] = useState(
+    pomodoro.minute(settings.pomodoro)
+  );
   const [isPaused, setIsPaused] = useState(true);
-  const {settings, toggleAutoStart} = useStateContext()
   function displayMinutes() {
     return getMinutesString(remainingTime).toString().padStart(2, "0");
   }
@@ -51,7 +47,8 @@ function Timer({
   useEffect(() => {
     if (settings.autoStart) {
       if (
-        (pomodoroCount % pomodoroRepeat === 0 && mode === timerModes[0].name) ||
+        (pomodoroCount % settings.longBreakDuration === 0 &&
+          mode === timerModes[0].name) ||
         pomodoroCount === 0
       ) {
         setIsPaused(true);
@@ -63,18 +60,18 @@ function Timer({
     }
     switch (mode) {
       case timerModes[0].name:
-        setRemainingTime(pomodoro);
+        setRemainingTime(pomodoro.minute(settings.pomodoro));
         break;
       case timerModes[1].name:
-        setRemainingTime(shortBreak);
+        setRemainingTime(shortBreak.minute(settings.shortBreak));
         break;
       case timerModes[2].name:
-        setRemainingTime(longBreak);
+        setRemainingTime(longBreak.minute(settings.longBreak));
         break;
       default:
         console.log("something is wrong");
     }
-  }, [mode]);
+  }, [mode,settings]);
   return (
     <>
       <p className="text-9xl font-semibold p-4">
