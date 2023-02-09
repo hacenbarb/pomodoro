@@ -73,25 +73,7 @@ function Settings({ handleExit }) {
   }
   function handleChange(e, type) {
     const value = parseInt(e.target.value);
-    // settempSettings((prev) => ({...prev, `type`: value}))
-    switch (type) {
-      case "pomodoro": {
-        settempSettings((prev) => ({ ...prev, pomodoro: value }));
-        break;
-      }
-      case "shortBreak": {
-        settempSettings((prev) => ({ ...prev, shortBreak: value }));
-        break;
-      }
-      case "longBreak": {
-        settempSettings((prev) => ({ ...prev, longBreak: value }));
-        break;
-      }
-      case "longBreakDuration": {
-        settempSettings((prev) => ({ ...prev, longBreakDuration: value }));
-        break;
-      }
-    }
+    settempSettings((prev) => ({...prev, [type]: value}))
   }
   function toggleAutoStart() {
     settempSettings((prev) => ({ ...prev, autoStart: !prev.autoStart }));
