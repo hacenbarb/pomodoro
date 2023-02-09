@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Timer, TimerModesWrapper } from "./components";
+import { Timer, TimerModesWrapper, Settings } from "./components";
 import { timerModes, pomodoroRepeat } from "./constants";
 import dayjs from "dayjs";
 import objectSupport from "dayjs/plugin/objectSupport";
@@ -9,7 +9,6 @@ dayjs.extend(objectSupport);
 function App() {
   const [showMore, setShowMore] = useState(false);
   const [modeIsActive, setModeIsActive] = useState("pomodoro");
-  const [autoStart, setAutoStart] = useState(true);
   const [pomodoroCount, setpomodoroCount] = useState(0);
 
   function pomodoroCountPlus() {
@@ -19,7 +18,7 @@ function App() {
     setShowMore((prev) => !prev);
   }
   function nextMode() {
-    const addedPomodoro = pomodoroCount + 1
+    const addedPomodoro = pomodoroCount + 1;
     const pomodoroMode = timerModes[0].name;
     const shortBreakMode = timerModes[1].name;
     const longBreakMode = timerModes[2].name;
@@ -52,24 +51,16 @@ function App() {
             nextMode={nextMode}
             pomodoroCount={pomodoroCount}
             pomodoroCountPlus={pomodoroCountPlus}
-            autoStart={autoStart}
           />
         </div>
       </div>
-      <div className="absolute right-8 bottom-8 flex flex-col-reverse items-center justify-center gap-4 w-32 bg-blue-300 p-4 overflow-hidden">
-        <div
-          className="text-4xl cursor-pointer rotate-90"
-          onClick={toggleShowMore}
-        >
-          <CiCircleMore />
-        </div>
-        {showMore && (
-          <div className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam,
-            numquam.
-          </div>
-        )}
+      <div
+        className="fixed right-8 bottom-8 text-5xl cursor-pointer rotate-90 z-10"
+        onClick={toggleShowMore}
+      >
+        <CiCircleMore />
       </div>
+      {showMore && <Settings handleExit={toggleShowMore} />}
     </div>
   );
 }
