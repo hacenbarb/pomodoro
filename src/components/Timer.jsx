@@ -7,8 +7,12 @@ import {
   timerModes,
 } from "../constants";
 import { getMinutesString, getSecondsString } from "../utils";
+import alarmAudio from "../assets/alarm-clock.mp3";
 import { TimerController as Controller } from "./";
 import { useStateContext } from "../contexts/ContextProvider";
+
+const alarm = new Audio(alarmAudio);
+alarm.loop = true;
 
 function Timer({ mode, nextMode, pomodoroCount, pomodoroCountPlus }) {
   const { settings } = useStateContext();
@@ -29,10 +33,19 @@ function Timer({ mode, nextMode, pomodoroCount, pomodoroCountPlus }) {
     setIsPaused((prev) => !prev);
   }
 
+  function playSound() {
+    alarm.play();
+    const timeOut = setTimeout(() => {
+      alarm.pause();
+      alarm.currentTime = 0;
+    }, 3000);
+    return () => clearTimeout(timeOut)
+  }
   useEffect(() => {
     if (timeZero.isSame(remainingTime)) {
       if (mode === timerModes[0].name) pomodoroCountPlus();
       nextMode();
+      playSound();
     }
   }, [remainingTime]);
   useEffect(() => {
@@ -71,7 +84,11 @@ function Timer({ mode, nextMode, pomodoroCount, pomodoroCountPlus }) {
       default:
         console.log("something is wrong");
     }
-  }, [mode,settings]);
+  }, [mode, settings]);
+  useEffect(() => {
+    document.title = `${displayMinutes()}:${displaySeconds()} - ${mode}`
+    return () => document.title = 'pomodoro'
+  }, [mode,remainingTime])
   return (
     <>
       <p className="text-9xl font-semibold p-4">
