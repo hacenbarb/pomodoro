@@ -3,7 +3,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { SettingsField } from "./";
 import { CiCircleRemove } from "react-icons/ci";
 function Settings({ handleExit }) {
-  const { settings, setSettings } = useStateContext();
+  const { settings, updateSettings } = useStateContext();
   const [tempSettings, settempSettings] = useState(settings);
   function add(opt) {
     switch (opt) {
@@ -100,7 +100,7 @@ function Settings({ handleExit }) {
   }
   function submit() {
     if (validate()) {
-      setSettings(tempSettings);
+      updateSettings(tempSettings);
       handleExit();
       return true;
     }

@@ -11,34 +11,19 @@ const initialSettings = {
 };
 
 export function ContextProvider({ children }) {
-  const [settings, setSettings] = useState(initialSettings);
-
-  function setPomodoro(value) {
-    setSettings((prev) => ({ ...prev, pomodoro: value }));
+  const settingsValue = localStorage.getItem("settings") !== null
+    ? JSON.parse(localStorage.getItem("settings"))
+    : initialSettings;
+  const [settings, setSettings] = useState(settingsValue);
+  function updateSettings(obj) {
+    setSettings(obj);
+    localStorage.setItem("settings", JSON.stringify(obj));
   }
-  function setShortBreak(value) {
-    setSettings((prev) => ({ ...prev, shortBreak: value }));
-  }
-  function setLongBreak(value) {
-    setSettings((prev) => ({ ...prev, longBreak: value }));
-  }
-  function setLongBreakDuration(value) {
-    setSettings((prev) => ({ ...prev, longBreakDuration: value }));
-  }
-  function toggleAutoStart() {
-    setSettings((prev) => ({ ...prev, autoStart: !prev.autoStart }));
-  }
-
   return (
     <StateContext.Provider
       value={{
         settings,
-        setSettings,
-        setPomodoro,
-        setShortBreak,
-        setLongBreak,
-        setLongBreakDuration,
-        toggleAutoStart,
+        updateSettings,
       }}
     >
       {children}

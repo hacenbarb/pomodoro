@@ -11,7 +11,20 @@ function App() {
   const [showMore, setShowMore] = useState(false);
   const [modeIsActive, setModeIsActive] = useState("pomodoro");
   const [pomodoroCount, setpomodoroCount] = useState(0);
-  const {settings} = useStateContext()
+  const { settings } = useStateContext();
+
+  function handlePomodoroCount() {
+    const Todaydate = new Date();
+    if (localStorage.getItem("date") === Todaydate.toDateString()) {
+      if (localStorage.getItem("pomodoroCount") !== null) {
+        setpomodoroCount(parseInt(localStorage.getItem("pomodoroCount")));
+      }
+      localStorage.setItem("pomodoroCount", 0);
+    } else {
+      localStorage.setItem("date", Todaydate.toDateString());
+      localStorage.setItem("pomodoroCount", 0);
+    }
+  }
   function pomodoroCountPlus() {
     setpomodoroCount((prev) => prev + 1);
   }
@@ -39,6 +52,12 @@ function App() {
         console.log("something is wrong");
     }
   }
+  useEffect(() => {
+    handlePomodoroCount();
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("pomodoroCount", pomodoroCount);
+  }, [pomodoroCount]);
   return (
     <div className="bg-gray-900 text-white">
       <div className="container">
