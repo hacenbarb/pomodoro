@@ -114,7 +114,7 @@ function Settings({ handleExit }) {
   }, []);
   return (
     <div className="fixed top-0 left-0 w-screen h-full grid grid-cols-3 grid-rows-1 bg-[rgba(0,0,0,.75)] z-10">
-      <div className="flex flex-col col-start-3 px-2 py-8 bg-slate-800">
+      <div className="flex flex-col col-start-2 lg:col-start-3 col-span-2 lg:col-span-1 px-2 py-8 bg-slate-800">
         <header className="flex items-center justify-between">
           <h3 className="text-xl">Settings</h3>
           <div
